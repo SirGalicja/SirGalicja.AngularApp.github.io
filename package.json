@@ -6,7 +6,15 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "extract": "ng extract-i18n --output-path .src\\locale",
+    "translateInic": "node src\\locale\\AutoTranlatorInit.js",
+    "translate": "npm run extract && npm run translateInic",
+    "replaceLocalize": "node src/locale/replace-localize.js",
+    "replacei18n": "node src/locale/replace-localize-toolbar.js",
+    "srl": "npm run replaceLocalize && ng build && ng serve",
+    "sri": "npm run replacei18n && ng build && ng serve",
+    "save": "ng deploy"
   },
   "prettier": {
     "printWidth": 100,
@@ -26,10 +34,14 @@
     "@angular/compiler": "^20.3.0",
     "@angular/core": "^20.3.0",
     "@angular/forms": "^20.3.0",
+    "@angular/localize": "^20.3.4",
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
+    "@ngx-translate/core": "^17.0.0",
+    "angular-cli-ghpages": "^2.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xmldom": "^0.6.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
