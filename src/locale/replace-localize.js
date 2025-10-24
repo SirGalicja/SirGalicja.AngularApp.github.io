@@ -2,15 +2,20 @@ const fs = require('fs');
 const path = require('path');
 const { DOMParser, XMLSerializer } = require('xmldom');
 const directoryPath = path.resolve(__dirname, '../../src'); // Ensure the path is correct
+
+
+// id = ''                  - id generowane automatycznie
+// id = '{some_text_here}'  - customowe id
+
 const replacements = [
-  { from: '1 Sample', to: 'Example01', toPL: 'Pierwsza Próbka' },
-  { from: '2 Sample', to: 'Example02', toPL: 'Pierwsza Próbka' },
-  { from: '3 Sample', to: 'Example03', toPL: 'Pierwsza Próbka' },
+  { from: '1 Sample', to: 'Example01', id: '@@fromplace', isnewid: true},
+  { from: '2 Sample', to: 'Example02', id: 'Example02' },
+  { from: '3 Sample', to: 'Example03', id: '' },
   
   
-  { from: 'Example01', to: '1 Sample', toPL: 'Pierwsza Próbka' },
-  { from: 'Example02', to: '2 Sample', toPL: 'Pierwsza Próbka' },
-  { from: 'Example03', to: '3 Sample', toPL: 'Pierwsza Próbka' }
+  { from: 'Example01', to: '1 Sample', id: '' },
+  { from: 'Example02', to: '2 Sample', id: '2_Sample' },
+  { from: 'Example03', to: '3 Sample', id: '' }
 ]
 
 
@@ -29,7 +34,7 @@ function searchAndReplaceInFile(filePath) {
       const regex = new RegExp(`\\$localize\`([^\`]*?)\\b${from}\\b([^\`]*)\``, 'g');
       // g - global
       // \$ - dosłownie znak $
-      // \` - że slash sie stosuje by nie zamknąć pod tym samym slash'u
+      // \` -slash sie stosuje by nie zamknąć pod tym znaku co się otwiera string regexa
 
       if (regex.test(content)) {
         content = content.replace(regex, (_, before, after) =>

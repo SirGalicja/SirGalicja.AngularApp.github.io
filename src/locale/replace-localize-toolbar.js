@@ -8,19 +8,37 @@ const directoryPath = path.resolve(__dirname, '../../src'); // Ensure the path i
 // id       -   id of i18n attribute
 // taginfo  -   the tag you want to change in i18n-example (so here taginfo will be the i18n-{taginfo})
 
+// id = ''                  - id generowane automatycznie
+// id = '{some_text_here}'  - customowe id
+
+
+
+
+
+
+
+
+
+
+
 const replacements = [
-  { from: '1', to: 'samochód', id: '', taginfo: ''},
-  { from: '2', to: 'samojezdny pojazd :>', id: 'bratek', taginfo: ''},
-  { from: '3', to: 'samojezdny pojazd :>', id: 'bra tek', taginfo: ''},
-  { from: '4', to: 'Pociąg :D', id: 'something', taginfo: ''},
+  { from: '1', to: 'samochód', id: '', taginfo: '', isnewId: false},
+  { from: '2', to: 'samojezdny pojazd :>', id: 'bratek', taginfo: '', isnewId: false},
+  { from: '3', to: 'samojezdny pojazd :>', id: 'bra tek', taginfo: '', isnewId: false},
+  { from: '4', to: 'Pociąg :D', id: 'something', taginfo: '', isnewId: false},
 
   // i18n-
-  { from: '5', to: 'Samolocik Hue Hue Hue', id: 'someID', taginfo: 'text'},
-  { from: '6', to: 'To jest Tag bez id :D', id: '', taginfo: 'text'},
-  { from: 'title', to: 'To Title Tag bez id :)', id: '', taginfo: 'title'},
+  { from: '5', to: 'Samolocik Hue Hue Hue', id: 'someID', taginfo: 'text', isnewId: false},
+  { from: '6', to: 'To jest Tag bez id :D', id: '', taginfo: 'text', isnewId: false},
+  { from: 'title', to: 'To Title Tag bez id :)', id: '', taginfo: 'title', isnewId: false},
 
   
-  { from: 'some title here', to: 'tile hehehe', id: '', taginfo: 'title'}
+  { from: 'some title here', to: 'tile hehehe', id: '', taginfo: 'title', isnewId: false},
+
+
+
+
+   { from: 'soemmthing', to: 'sample', id: '', taginfo: 'title', isnewId: false}
 
 
   //something
@@ -169,7 +187,7 @@ function searchAndReplace(filePath){
     let changed = false;
     
     // WAŻNE: Gdy coś nie działa, wina html. Naprawić można to zmieniając html (najłątwiejsze), bądź regexa (nie)
-    replacements.forEach(({ from, to, id, taginfo }) => {
+    replacements.forEach(({ from, to, id, taginfo, isnewId }) => {
  
         const isId = "";
         const isTag = "";
@@ -198,7 +216,7 @@ function searchAndReplace(filePath){
         if(taginfo == false){
         istrue == true
         ? searchedRegex = new RegExp(
-        `(<(\\w+|\\w+-\\w+)\\s[^>]*\\bi18n\\b\\s*(?!-)=\\s*(['"])[^"'>]*@@${id}(?:\\|[^"'>]*)?\\3[^>]*>)` + 
+        `(<(\\w+|\\w+-\\w+)\\s[^>]*\\bi18n\\b\\s*(?!-)=\\s*(['"])[^"'>]*@@${id}\\b(?:\\|[^"'>]*)?\\3[^>]*>)` + 
         `(${from})` +                          
         `(<\\/\\2>)`,                                      
         'g'     
@@ -221,11 +239,11 @@ function searchAndReplace(filePath){
         //============================================================================================
 
 
-        // i18n-  WROK IN PROGRESS!!!  (WITH ID WORKS NO WAY :O)
+        // i18n-  DONE
         else{
         istrue == true
         ? searchedRegex = new RegExp(
-        `(<(\\w+|\\w+-\\w+)\\s[^>]*\\bi18n-\\b${taginfo}\\s*=\\s*(['"])[^"'>]*@@${id}(?:\\|[^"'>]*)?\\3[^>]*` + 
+        `(<(\\w+|\\w+-\\w+)\\s[^>]*\\bi18n-\\b${taginfo}\\s*=\\s*(['"])[^"'>]*@@${id}\\b(?:\\|[^"'>]*)?\\3[^>]*` + 
         `${taginfo}=(['"]))(${from})` +
         `(\\4[^>]*>` +     
         `(?:(?!<\\/\\2>)[\\s\\S])*` +                    
@@ -248,8 +266,11 @@ function searchAndReplace(filePath){
         'g'
         );  
 
-        // (<(\w+|\w+-\w+)\s[^>]*\bi18n-\b${taginfo}\s*(?:(?:(?!=)[^>]*${taginfo})|(?:=\s*(['"])[^"'@>]*\3[^>]*${taginfo}))=(['"]))(${from})(\4[^>]*>(?:(?!<\/\2>)[\s\S])*<\/\2>)
+        // (<(\w+|\w+-\w+)\s[^>]*\bi18n-\btitle\s*(?:(?:(?!=)[^>]*title)|(?:=\s*(['"])[^"'@>]*\3[^>]*title))=(['"]))(some title here)(\4[^>]*>(?:(?!<\/\2>)[\s\S])*<\/\2>)
           
+
+
+
         }
         function replace(sampleregex, from, to, ThereIsTag){
             if(sampleregex.test(content))
@@ -283,6 +304,18 @@ function searchAndReplace(filePath){
                 console.log(`Znalazło plik`,to)
             }  
         }
+
+        // funkcje tera na zmianę id...
+        let searchedRegexforId
+        // (\bi18n\b(?!-)(=(["'\`])(?:(?!\3)[^>]*)@@)(CustomId)\b)((?:(?!\3)[^>]*)?\3[^>]*>(auto))<
+        
+        // i18n
+
+        searchedRegexforId = new RegExp(
+            `(\\bi18n\\b(?!-)=(["'\`])(?:(?!\\2)[^>]*)@@(${id})\\b(?:(?!\\2)[^>]*)?\\2[^>]*>)(${from})<`
+        )
+        
+        
         
 
         // wywoływanie funkcji
