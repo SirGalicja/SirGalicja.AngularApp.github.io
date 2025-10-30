@@ -22,9 +22,18 @@ export class App {
   protected readonly title = signal('Project Terra');
   protected readonly amount = signal(1020.99);  
 
-  ex1 = $localize`1 Sample`;
-  ex2 = $localize`2 Sample`;
-  ex3 = $localize`3 Sample`;
+l1 = $localize`1 Sample`;
+l2 = $localize`::1 Sample`;
+l3 = $localize`1 Sample::`;
+
+
+l4 = $localize`:@@id:1 Sample`;
+l5 = $localize`:Description|Meaning@@id:1 Sample`;
+
+
+l6 = $localize`1 Sample:@@id:`;
+l7 = $localize`1 Sample:Description|Meaning@@id:`;
+
   
   changeLanguage(event: Event) {
   const select = event.target as HTMLSelectElement;

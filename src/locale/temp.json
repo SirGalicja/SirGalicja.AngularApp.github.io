@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "1",
+    "source": "auto",
+    "target": "something",
+    "lang": "pl",
+    "module": "Greeting",
+    "isActive": true
+  },
+  {
+    "Id": "2",
+    "source": "Goodbye",
+    "target": "Do widzenia",
+    "lang": "pl",
+    "module": "Greeting",
+    "isActive": true
+  },
+  {
+    "Id": "3",
+    "source": "Yes",
+    "target": "Tak",
+    "lang": "pl",
+    "module": "Response",
+    "isActive": true
+  },
+  {
+    "Id": "4",
+    "source": "No",
+    "target": "Nie",
+    "lang": "pl",
+    "module": "Response",
+    "isActive": false
+  }
+]

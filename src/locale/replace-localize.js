@@ -29,7 +29,15 @@ function searchAndReplaceInFile(filePath) {
     let content = fs.readFileSync(filePath, 'utf-8');
     let changed = false;
 
-    replacements.forEach(({ from, to }) => {
+    replacements.forEach(({ from, to, id }) => {
+
+      const regexforid = new RegExp(
+
+      )
+
+      const regexnoid = new RegExp(
+        
+      )
 
       const regex = new RegExp(`\\$localize\`([^\`]*?)\\b${from}\\b([^\`]*)\``, 'g');
       // g - global

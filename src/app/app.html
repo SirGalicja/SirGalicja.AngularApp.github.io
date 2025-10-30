@@ -116,9 +116,9 @@
       <option i18n="German language option@@language-de" value="de">German</option>
     </select>
     <p>{{ amount() | currency }}</p>
-    <p>{{ ex1 }}</p>
-    <p>{{ ex2 }}</p>
-    <p>{{ ex3 }}</p>
+    <p>{{ l1 }}</p>
+    <p>{{ l2 }}</p>
+    <p>{{ l3 }}</p>
 
     <p i18n-text text="examplefile1"></p>
     <p i18n-text text="example file 2"></p>
@@ -134,20 +134,18 @@
 
     <p i18n-text="auto" text="auto">auto</p>
 
-    <p i18n-title i18n-text="auto" text="auto" title="title">auto</p>
+    <p i18n-title i18n-text="auto" text="auto" title="auto">auto</p>
 
-    <p i18n-text="@@someID" text="auto" i18n i18n-title title="some title here"><b>some text here</b></p>
+    <p i18n-title="@@someIDsss" text="auto" i18n title="tile hehehe"><b>some text here</b></p>
 
     <p i18n-text="@@someID" 
     popover="somepopover" text="5s" 
-    i18n-title class="psls" part="somepart" title="some title here">
+    i18n-title class="psls" part="somepart" title="tile hehehe">
     <b></b>
     </p>
     <div i18n-text text="auto" title="some title here">
-      <div i18n-text="@@someIDs" text="5" title="some title here">
-        <div i18n-title title="some title here" text="auto">
-
-        </div>
+      <div i18n-text="@@someIDs" text="auto" title="some title here">
+        <div i18n-aria-sort aria-sort="auto"></div>
       </div>
     </div>
 
@@ -155,7 +153,18 @@
     <p i18n>explain</p>
     <p i18n>explain</p>
     <p i18n>explain</p>
+
+
+    <p i18n-title i18n-text="auto" i18n-class text="auto" title="auto" class="auto">auto</p>
+
+
+    
+
+
+
+
     <p i18n>explain</p>
+    <p i18n-text text="explain"></p>
     
 
     
