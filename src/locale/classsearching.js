@@ -24,14 +24,19 @@ const regex_from_console = process.argv.slice(2);
 
 if(regex_from_console.length > 1){
     regex_from_console.forEach(element => {
-        regex += `${element}`   // <= jeżeli chcemy dodać spację odzielającą elementy wpisane w tablicy, to tutaj:
+        regex += element
     });
 }
 else if(regex_from_console.length == 1){
     regex = regex_from_console[0]
 }
 
-console.log(regex)
+if(regex == "" || regex == undefined){
+    regex = undefined;
+}
+    
+
+console.log(`regex: "${regex}"`)
 
 
 
@@ -86,28 +91,30 @@ let zmienna = new RegExp(
     'g'
 )
 
-function searchClasses(filePath, some_regex, name_of_class){
+function searchClasses(filePath, typed_regex, name_of_class){
     let content = fs.readFileSync(filePath, 'utf-8');
+    let regex;
     let results;
-    
-    let regex_re  = new RegExp(
-        `\\b(${some_regex})\\b[.]+([a-zA-Z0-9\\-]+)\\b`,
-        'g'
-    );
 
-    let regex_sc = new RegExp(
+    
+    // potem do dania priorytetu
+    let isRegex = true
+
+    if(typed_regex == undefined){
+        console.log(`Regex jest pusty`)
+        isRegex = false
+    }
+
+    isRegex == true
+    ? regex = new RegExp(
+        `\\b(${typed_regex})\\b[.]+([a-zA-Z0-9\\-]+)\\b`,
+        'g'
+    )
+    : regex = new RegExp(
         `\\b(${name_of_class})\\b[.]+([a-zA-Z0-9\\-]+)\\b`,
         'g'
-    ); 
-
+    ) 
     
-    let regex;
-    if((some_regex != undefined || some_regex != "")){
-        regex = regex_re;
-    }
-    else if((name_of_class != undefined || name_of_class != "") && (some_regex == undefined || some_regex == "")){
-        regex = regex_sc;
-    }
     
     
     results = [...content.matchAll(regex)];
