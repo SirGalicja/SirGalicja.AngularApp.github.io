@@ -4,6 +4,7 @@ const path = require('path');
 const { from } = require('rxjs');
 const directoryPath = path.resolve(__dirname, '../../src'); // Ensure the path is correct
 
+
 // Szukanie klas:
 // zrobić skrypt który:
 // znajdzie coś na zasadzie:
@@ -13,6 +14,26 @@ const directoryPath = path.resolve(__dirname, '../../src'); // Ensure the path i
 // {klasa}.property - wsytępuję w pliku: plik.ts/.html   |   wsytępuje w linijce:  {linijka jaką znajdzie}
 
 // przykładowy regex: \b(VehiclesPermission)\b[.]+([a-zA-Z0-9\-]+)\b
+
+
+
+// dane podać bez --{wpisaney w konsole regex}
+let regex = ""
+const regex_from_console = process.argv.slice(2);
+// console.log(regex_from_console);
+
+if(regex_from_console.length > 1){
+    regex_from_console.forEach(element => {
+        regex += `${element}`   // <= jeżeli chcemy dodać spację odzielającą elementy wpisane w tablicy, to tutaj:
+    });
+}
+else if(regex_from_console.length == 1){
+    regex = regex_from_console[0]
+}
+
+console.log(regex)
+
+
 
 class ClassesandProperties {
     className;
@@ -59,8 +80,10 @@ class Database {
 
 let searchedClass = 'UserPermission'
 let databasewithClasses = new Database();
+
 let zmienna = new RegExp(
-    `\\bSomething\\b`
+    `Something`,
+    'g'
 )
 
 function searchClasses(filePath, some_regex, name_of_class){
@@ -79,10 +102,10 @@ function searchClasses(filePath, some_regex, name_of_class){
 
     
     let regex;
-    if(some_regex != undefined || some_regex != ""){
+    if((some_regex != undefined || some_regex != "")){
         regex = regex_re;
     }
-    else if(name_of_class != undefined || name_of_class != ""){
+    else if((name_of_class != undefined || name_of_class != "") && (some_regex == undefined || some_regex == "")){
         regex = regex_sc;
     }
     
@@ -142,4 +165,4 @@ function walkDirectory(dir, searchedRegex, nameOfClass) {
 }
 
 
-walkDirectory(directoryPath, zmienna, searchedClass)
+walkDirectory(directoryPath, regex, searchedClass)

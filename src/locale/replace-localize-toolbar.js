@@ -154,17 +154,17 @@ class Database{
             
             istrue == true
             ? searchedRegex = new RegExp(
-            `(<(\\w+|\\w+-\\w+)\\b\\s[^>]*` +
+            `(<(\\w+|\\w+(?:\\-\\w+)+)\\b\\s[^>]*` +
             `\\bi18n\\b\\s*(?!-)=\\s*()()` +
             `(['"])[^"'>]*@@${id}\\b(?:\\|[^"'>]*)?\\5[^>]*>)` + 
             `(${from})` +                          
             `(<\\/\\2>)`,                                      
             'g' 
-            // (<(\w+|\w+-\w+)\b\s[^>]*\bi18n\b\s*(?!-)=\s*()()
+            // (<(\w+|\w+(?:\-\w+)+)\b\s[^>]*\bi18n\b\s*(?!-)=\s*()()
             // (['"])[^"'>]*@@${id}\b(?:\|[^"'>]*)?\5[^>]*>)(${from})(<\/\2>)
             )
             : searchedRegex = new RegExp(
-            `(<(\\w+|\\w+-\\w+)\\b\\s[^>]*` +      
+            `(<(\\w+|\\w+(?:\\-\\w+)+)\\b\\s[^>]*` +      
             `\\bi18n\\b(?!-)\\s*()()` +             
             `(?:` +                             
             `(?:(?!=)[^>]*>)` +
@@ -175,7 +175,7 @@ class Database{
             `(<\\/\\2>)`,                       
             'g'
             );
-            // (<(\w+|\w+-\w+)\b\s[^>]*\bi18n\b(?!-)\s*()()(?:(?:(?!=)[^>]*>)|
+            // (<(\w+|\w+(?:\-\w+)+)\b\s[^>]*\bi18n\b(?!-)\s*()()(?:(?:(?!=)[^>]*>)|
             // (?:=\s*(['"])[^"'@>]*\5[^>]*>)))(${from})(<\/\2>)
             
             //================================================================================
@@ -184,7 +184,7 @@ class Database{
             
             istrue == true
             ? searchedRegexAttribute = new RegExp(
-            `(<(\\w+|\\w+-\\w+)\\b\\s[^>]*` +
+            `(<(\\w+|\\w+(?:\\-\\w+)+)\\b\\s[^>]*` +
             `\\bi18n-\\b(\\w+|\\w+-\\w+)\\b\\s*` +
             `=\\s*(['"])[^"'>]*@@${id}\\b(?:\\|[^"'>]*)?\\4[^>]*` + 
             `\\b\\3=(['"]))` +
@@ -192,10 +192,10 @@ class Database{
             `(\\5[^>]*>)`,                                      
             'g'     
             )
-            // (<(\w+|\w+-\w+)\b\s[^>]*\bi18n-\b(\w+|\w+-\w+)\b\s*=\s*(['"])[^"'>]*@@${id}\b(?:\|[^"'>]*)?\4[^>]*
+            // (<(\w+|\w+(?:\-\w+)+)\b\s[^>]*\bi18n-\b(\w+|\w+-\w+)\b\s*=\s*(['"])[^"'>]*@@${id}\b(?:\|[^"'>]*)?\4[^>]*
             // \b\3=(['"]))(${from})(\5[^>]*>)
             : searchedRegexAttribute = new RegExp(
-            `(<(\\w+|\\w+-\\w+)\\b\\s[^>]*` +
+            `(<(\\w+|\\w+(?:\\-\\w+)+)\\b\\s[^>]*` +
             `\\bi18n-\\b(\\w+|\\w+-\\w+)\\b\\s*` +
             `(?:` +
             `(?:(?!=)[^>]*)` +
@@ -208,9 +208,7 @@ class Database{
             'g'
             );  
 
-            //(i18n-\b(\w+|\w+-\w+)\b\s*(?:(?:(?!=)[^>]*)|(?:=\s*(['"])[^"'@>]*\3[^>]*))\2=(['"]))(auto)(\4)
-
-            //(<(\w+|\w+-\w+)\b\s[^>]*\bi18n-\b(\w+|\w+-\w+)\b\s*(?:(?:(?!=)[^>]*)
+            //(<(\w+|\w+(?:\-\w+)+)\b\s[^>]*\bi18n-\b(\w+|\w+-\w+)\b\s*(?:(?:(?!=)[^>]*)
             //|(?:=\s*(['"])[^"'@>]*\4[^>]*))\3=(['"]))(${from})(\5[^>]*>)
             
             // wywoływanie funkcji
@@ -303,32 +301,22 @@ let replacements_for_json = new Database;
 // }
 }
 
-// pomysł:
-// aż do momentu, kiedy cały czas będzie wychwycało regexa, robić:
-// regex: i18n-atrybut (w środku grupa z i18n-atrybut, która może wiele razy wystąpić) atrybut
-// wtedy zamienia miejscami grupy tak, by było
-// (i18n-atrybut) (atrybut) (to co było w środku)
+// pomysł na sortowanie (OBECNIE NIE TRZEBA :>)
+// function sortinsidehtml(filePath){
+//     let content = fs.readFileSync(filePath, 'utf-8');
 
-function sortinsidehtml(filePath){
-    let content = fs.readFileSync(filePath, 'utf-8');
+//     const regex = new RegExp(
+//         `\\bi18n-\\b` +
+//         `([a-zA-Z0-9\\-]+)` +
+//         `(i18n-([a-zA-Z0-9\\-]+)[^>]*\\3)+`
+//         `\\1`,
+//         'g'
+//         // (i18n-([a-zA-Z0-9\-]+)\b(?:="[^>"]*")?)((?:[^>]*([a-zA-Z0-9\-]+)[^>]*\4)+[^>]*)(\b\2\b=(['"])(?:(?!\6)[^>])*\6)
+//     )
+//     while(regex.test(content)){
 
-    const regex = new RegExp(
-        `\\bi18n-\\b` +
-        `([a-zA-Z0-9\\-]+)` +
-        `(i18n-([a-zA-Z0-9\\-]+)[^>]*\\3)+`
-        `\\1`,
-        'g'
-        // (i18n-([a-zA-Z0-9\-]+)\b(?:="[^>"]*")?)((?:[^>]*([a-zA-Z0-9\-]+)[^>]*\4)+[^>]*)(\b\2\b=(['"])(?:(?!\6)[^>])*\6)
-    )
-    while(regex.test(content)){
-
-    }
-}
-
-// inny pomysł:
-// jak istnieje sposób na zrobienie by regex mógł przechodzić przez te same dane jeśli inny regex zliczy jakoś
-// ilość wystąpień. Wtedy to zrobić pętlę, która będzie działać przez tyle ile wystąpi
-
+//     }
+// }
 
 
 
