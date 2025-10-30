@@ -107,6 +107,8 @@ class Database{
             if(regex.test(content))
             {
                 // console.log(`Regex znaleziony`, regex)
+                while(regex.test(content))
+                {
                 changed = true;
                 console.log(`Znalazło dane to tłumaczenia: ${from}  |na:| ${to}`)
             
@@ -115,7 +117,8 @@ class Database{
                     const newInner = inner.split(from).join(to);
                 
                     return `${opentag}${newInner}${closetag}`;
-                });   
+                }); 
+                }  
             }  
             if (changed) {
                 fs.writeFileSync(filePath, content, 'utf-8');
@@ -310,18 +313,23 @@ function sortinsidehtml(filePath){
     let content = fs.readFileSync(filePath, 'utf-8');
 
     const regex = new RegExp(
-        ``,
+        `\\bi18n-\\b` +
+        `([a-zA-Z0-9\\-]+)` +
+        `(i18n-([a-zA-Z0-9\\-]+)[^>]*\\3)+`
+        `\\1`,
         'g'
+        // (i18n-([a-zA-Z0-9\-]+)\b(?:="[^>"]*")?)((?:[^>]*([a-zA-Z0-9\-]+)[^>]*\4)+[^>]*)(\b\2\b=(['"])(?:(?!\6)[^>])*\6)
     )
     while(regex.test(content)){
 
     }
-    content.matchAll()
 }
 
 // inny pomysł:
 // jak istnieje sposób na zrobienie by regex mógł przechodzić przez te same dane jeśli inny regex zliczy jakoś
-// ilość wystąpień. Wtedy to zrobić pętlę, która będzie działać przez tyle ile wystąpi 
+// ilość wystąpień. Wtedy to zrobić pętlę, która będzie działać przez tyle ile wystąpi
+
+
 
 
 function importObjectstoDatabase(array_from, array_to){

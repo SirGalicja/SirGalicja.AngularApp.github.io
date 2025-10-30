@@ -19,10 +19,14 @@ class ClassesandProperties {
     property;
     localization;
 
+    full_property;
+
     constructor(Class, property, lineNumber){
         this.className = Class,
         this.property = property,
         this.localization = lineNumber
+
+        this.full_property = `${this.className}.${this.property}`
     }
 }
 
@@ -53,17 +57,35 @@ class Database {
 
 
 
-let searchedClass = 'VehiclesPermission'
+let searchedClass = 'UserPermission'
 let databasewithClasses = new Database();
+let zmienna = new RegExp(
+    `\\bSomething\\b`
+)
 
-function searchClasses(filePath, name_of_class){
+function searchClasses(filePath, some_regex, name_of_class){
     let content = fs.readFileSync(filePath, 'utf-8');
     let results;
     
-    const regex = new RegExp(
-        `\\b(${name_of_class})\\b[.]+([a-zA-Z0-9\\-]+)\\b`,
+    let regex_re  = new RegExp(
+        `\\b(${some_regex})\\b[.]+([a-zA-Z0-9\\-]+)\\b`,
         'g'
     );
+
+    let regex_sc = new RegExp(
+        `\\b(${name_of_class})\\b[.]+([a-zA-Z0-9\\-]+)\\b`,
+        'g'
+    ); 
+
+    
+    let regex;
+    if(some_regex != undefined || some_regex != ""){
+        regex = regex_re;
+    }
+    else if(name_of_class != undefined || name_of_class != ""){
+        regex = regex_sc;
+    }
+    
     
     results = [...content.matchAll(regex)];
     let szukanaklasa
@@ -98,26 +120,26 @@ if (!fs.existsSync(directoryPath)) {
     process.exit(1); // Exit the script with an error code
 }
 
-function walkDirectory(dir, nameOfClass) {
+function walkDirectory(dir, searchedRegex, nameOfClass) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
 
     for (const entry of entries) {
         const fullPath = path.join(dir, entry.name);
         //console.log(`✔ Processing: ${fullPath}`);
         if (entry.isDirectory()) {
-            walkDirectory(fullPath, nameOfClass);      // rekurencja (ZAWSZE TO CO JEST DANE TEŻ W FUNKCJI)
+            walkDirectory(fullPath, searchedRegex, nameOfClass);      // rekurencja (ZAWSZE TO CO JEST DANE TEŻ W FUNKCJI)
         }
         else if (entry.isFile() && fullPath.endsWith('.ts')) {
             console.log(`✔ Processed TS file: ${fullPath}`);
-            searchClasses(fullPath, nameOfClass);
+            searchClasses(fullPath, searchedRegex, nameOfClass);
         }
 
         else if (entry.isFile() && fullPath.endsWith('.html')) {
             console.log(`✔ Processed HTML file: ${fullPath}`);
-            searchClasses(fullPath, nameOfClass);
+            searchClasses(fullPath, searchedRegex, nameOfClass);
         }
     }
 }
 
 
-walkDirectory(directoryPath, searchedClass)
+walkDirectory(directoryPath, zmienna, searchedClass)

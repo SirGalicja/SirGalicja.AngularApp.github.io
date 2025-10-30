@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 
-import { VehiclesPermission } from './../../services/VehiclesPermission'
+import { VehiclesPermission, UserPermission } from './../../services/VehiclesPermission'
 
 @Component({
   selector: 'app-komponent',
@@ -11,6 +11,7 @@ import { VehiclesPermission } from './../../services/VehiclesPermission'
 })
 export class Komponent {
   VehiclesPermission = VehiclesPermission
+  UserPermission = UserPermission
   
   
 
